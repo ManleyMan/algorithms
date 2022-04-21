@@ -8,54 +8,21 @@
 // return the cipher
 
 function KeywordCipher(abc, key) {
-  // console.log('abc',abc)
-  // console.log('keyword',key)
+  let newAbc = [...abc].filter(letter => !key.includes(letter))
+  let keyArr = [...key].concat(newAbc)
+  let newArr = keyArr.filter((letter,i) => keyArr.indexOf(letter) === i) 
   
-  key = key.split('')
-  abc = abc.split('')
-  let newAbc = abc.filter(letter => !key.includes(letter))
-  let keyArr = key.concat(newAbc)
-  console.log('keyArr', keyArr.length)
-    
-    // encode 
   this.encode = function (str) {
-  let strArr = str.split('')
-  console.log(strArr)
-  let result = str.split('').map(el => {
-  if(abc.includes(el)){
-    return abc.indexOf(el)
-  }else{ return el}
-  })
-  console.log('encode result', result)
-    let newResult = result.map(letter => {
-     if(keyArr[letter] && typeof letter != 'string'){
-      return keyArr[letter]
-     }else {return letter}
-    })
-  console.log('encode newResult',newResult.join(''))
-    return newResult.join('')
+  let result = str.split('').map(el =>  abc.includes(el) ? abc.indexOf(el) : el)
+  let newResult = result.map(el  => newArr[el] && typeof el != 'string' ? newArr[el] : el)
+  return newResult.join('')
   }
-    // decode
   this.decode = function (str) {
-    let strArr = str.split('')
-    console.log('decode strArr',strArr)
-  let answer = str.split('').map(el => {
-  if(keyArr.includes(el)){
-    return keyArr.indexOf(el)
-  }else { return el}
-  })
-  console.log('decode answer', answer)
-    let newAnswer = answer.map(letter => {
-      if(abc[letter] && typeof letter != 'string'){
-        return abc[letter]
-      }else {return letter}
-    })
-  console.log('decode newAnswer',newAnswer.join(''))
-    return newAnswer.join('')
+  let answer = str.split('').map(el => newArr.includes(el) ? newArr.indexOf(el) : el)
+  let newAnswer = answer.map(el => abc[el] && typeof el != 'string' ? abc[el] : el)
+  return newAnswer.join('')
   }
-  
   }
-
   // tests
 
 //   describe("Tests", () => {
